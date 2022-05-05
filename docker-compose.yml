@@ -1,0 +1,26 @@
+version: '3'
+services:
+  ganache:
+    build:
+      context: .
+      target: ganache
+    ports:
+      - 8545:8545
+    networks:
+      - backend
+    restart: always
+  web3-dev:
+    build:
+      context: .
+      target: web3py
+    networks:
+      - backend
+    depends_on:
+      - ganache
+    restart: always
+    volumes:
+      - ./code:/home/pn/code
+    command: tail -f /dev/null
+networks:
+  backend:
+    driver: "bridge"
