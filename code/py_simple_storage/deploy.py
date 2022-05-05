@@ -5,7 +5,8 @@ from web3 import Web3
 from dotenv import load_dotenv
 import os
 
-load_dotenv()
+#load_dotenv(".env")
+load_dotenv(".env.infura")
 
 with open("./SimpleStorage.sol", "r") as file:
     simple_storage_file = file.read()
