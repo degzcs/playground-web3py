@@ -5,8 +5,8 @@ from web3 import Web3
 from dotenv import load_dotenv
 import os
 
-#load_dotenv(".env")
-load_dotenv(".env.infura")
+load_dotenv(".env")
+#load_dotenv(".env.infura")
 
 with open("./SimpleStorage.sol", "r") as file:
     simple_storage_file = file.read()
@@ -40,13 +40,12 @@ w3 = Web3(Web3.HTTPProvider(os.getenv("BLOCKCHAIN_URL")))
 chain_id = int(os.getenv("CHAIN_ID"))
 my_address = os.getenv("MY_ADDRESS")
 private_key = os.getenv("PRIVATE_KEY")
-print(w3.isConnected())
+print("Network connected:", w3.isConnected())
 
 # Create the contract in Python
 SimpleStorage = w3.eth.contract(abi=abi, bytecode=bytecode)
 # Get the latest transaction
 nonce = w3.eth.getTransactionCount(my_address)
-print(nonce)
 # Submit the transaction that deploys the contract
 transaction = SimpleStorage.constructor().buildTransaction(
     {
@@ -65,7 +64,6 @@ tx_hash = w3.eth.send_raw_transaction(signed_txn.rawTransaction)
 print("Waiting for transaction to finish...")
 tx_receipt = w3.eth.wait_for_transaction_receipt(tx_hash)
 print(f"Done! Contract deployed to {tx_receipt.contractAddress}")
-
 
 # Working with deployed Contracts
 simple_storage = w3.eth.contract(address=tx_receipt.contractAddress, abi=abi)
